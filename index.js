@@ -11,11 +11,11 @@ const socket = require('socket.io')(http);
 socket.on('connection', (userSocket) => {
     console.log('Connected now!');
 
-    userSocket.on('send_message', (data) => {
+    userSocket.on('send_message', (data, ackCallback) => {
         console.log("Received message...now broadcasting...");
-        userSocket.broadcast.emit('receive_message', data['message']);
+        userSocket.broadcast.emit('receive_message', data);
 
-        data['callback']({
+        ackCallback({
             success: true,
             message: "Message successfully received and broadcasted"
         });
