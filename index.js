@@ -19,7 +19,11 @@ socket.on('connection', (userSocket) => {
             success: true,
             message: "Message successfully received and broadcasted"
         });
-    })
+    });
+
+    userSocket.on('new_member', (data) => {
+        userSocket.broadcast.emit('new_member', data);
+    });
 })
 
 http.listen(process.env.PORT);
