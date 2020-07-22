@@ -1,5 +1,3 @@
-const { count } = require('console');
-
 const app = require('express')();
 const http = require('http').createServer(app);
 
@@ -26,11 +24,10 @@ socket.on('connection', (userSocket) => {
     });
 
     userSocket.on('new_member', (data, sendUsersCount) => {
-        count++;
+        clientsCount++;
 
-        sendUsersCount(count);
-        
-        data['count'] = count;
+        sendUsersCount(clientsCount);
+        userSocket.broadcast.emit('count_change', clientsCount);
         userSocket.broadcast.emit('new_member', data);
     });
 })
