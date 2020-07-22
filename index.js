@@ -33,9 +33,10 @@ socket.on('connection', (userSocket) => {
         userSocket.broadcast.emit('new_member', data);
     });
 
-    userSocket.on('count_change', () => {
+    userSocket.on('count_change', (data, ackCallback) => {
         clientsCount--;
         userSocket.broadcast.emit('count_change', clientsCount);
+        ackCallback({success: true});
     });
 })
 
