@@ -1,3 +1,5 @@
+const { count } = require('console');
+
 const app = require('express')();
 const http = require('http').createServer(app);
 
@@ -7,6 +9,8 @@ app.get('/', (req, res) => {
 })
 
 const socket = require('socket.io')(http);
+
+let clientsCount = 0;
 
 socket.on('connection', (userSocket) => {
     console.log('Connected now!');
@@ -21,7 +25,12 @@ socket.on('connection', (userSocket) => {
         });
     });
 
-    userSocket.on('new_member', (data) => {
+    userSocket.on('new_member', (data, sendUsersCount) => {
+        count++;
+
+        sendUsersCount(count);
+        
+        data['count'] = count;
         userSocket.broadcast.emit('new_member', data);
     });
 })
